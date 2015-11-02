@@ -1,5 +1,6 @@
 import 'styles/style.scss' 
-
+import StackBlur from 'stackblur-canvas'
+import dock from 'images/dock.jpg'
 class FoggyWindow {
     constructor(){
         // setup canvas
@@ -10,8 +11,7 @@ class FoggyWindow {
 
         // draw image
         this.scenery = new Image()
-        //this.scenery.src = 'https://c1.staticflickr.com/1/653/22653732832_e08adc6b01_h.jpg'
-        this.scenery.src = 'http://c2.staticflickr.com/6/5773/22682099011_04b9a83085_b.jpg'
+        this.scenery.src = dock 
         this.scenery.onload = () => {
             this.render()
         }
@@ -48,7 +48,15 @@ class FoggyWindow {
         }
         
         this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight)
+        
+        this.blur(8)
 
+    }
+
+    blur(radius){
+        const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+        const blurred = StackBlur.imageDataRGB(imageData, 0, 0, this.canvas.width, this.canvas.height, radius);
+        this.context.putImageData(blurred, 0, 0 )
     }
 }
 
