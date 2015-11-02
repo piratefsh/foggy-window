@@ -16,7 +16,19 @@ class FoggyWindow {
             this.render()
         }
 
+        let moveListener = (event) => this.draw(event)
         window.onresize = () => this.render()
+        this.canvas.addEventListener('mousedown', (event) => {
+            this.canvas.addEventListener('mousemove', moveListener)
+        })
+        this.canvas.addEventListener('touchstart', (event) => {
+            this.canvas.addEventListener('touchmove', moveListener)
+        })
+        this.canvas.addEventListener('mouseup', (event) => {
+            event.target.removeEventListener('mousemove', moveListener)
+        })
+
+        
     }
 
     render(){
@@ -58,6 +70,28 @@ class FoggyWindow {
         const blurred = StackBlur.imageDataRGB(imageData, 0, 0, this.canvas.width, this.canvas.height, radius);
         this.context.putImageData(blurred, 0, 0 )
     }
+
+    draw(event){
+
+        let x, y
+
+        if ('clientX' in event){
+            x = event.clientX
+            y = event.clientY            
+        }
+        else if ('touches' in event){
+            x = event.touches[0].clientX
+            y = event.touches[0].clientY
+        }
+        else{
+            console.error("Unknown event sent to draw function")
+        }
+
+        this.context.fillStyle = '#ffffff'
+        this.context.fillRect(x, y, 3,3) 
+        this.context.stroke()
+    }
+
 }
 
 const foggy = new FoggyWindow()
