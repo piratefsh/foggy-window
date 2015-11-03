@@ -7,6 +7,9 @@ class FoggyWindow {
   constructor() {
     // setup canvas
     this.canvas = document.querySelector('.foggy-window');
+    this.overlayCanvas = document.createElement('canvas');
+    this.overlayContext = this.overlayCanvas.getContext('2d');
+    document.querySelector('body').appendChild(this.overlayCanvas);
 
     this.context = this.canvas.getContext('2d');
     this.context.scale(window.devicePixelRatio / 2, window.devicePixelRatio / 2);
@@ -51,8 +54,6 @@ class FoggyWindow {
   }
 
   getImageOffset(image) {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
     const imgAspectRatio = image.width / image.height;
     const canvasAspectRatio = this.canvas.width / this.canvas.height;
 
@@ -82,6 +83,11 @@ class FoggyWindow {
 
   render() {
 
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this.overlayCanvas.width = window.innerWidth;
+    this.overlayCanvas.height = window.innerHeight;
+    
     this.startedDrawing = false;
     let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery);
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
@@ -112,6 +118,8 @@ class FoggyWindow {
     //console.log(this.startedDrawing)
     let x, y;
 
+    const context = this.overlayContext;
+
     if ('clientX' in event) {
         x = event.clientX;
         y = event.clientY;
@@ -122,15 +130,15 @@ class FoggyWindow {
         console.error('Unknown event sent to draw function');
     }
 
-    this.context.lineCap = 'round';
-    this.context.lineWidth = 35;
-    this.context.strokeStyle = 'rgba(255,255,255,0.05)';
+    context.lineCap = 'round';
+    context.lineWidth = 35;
+    context.strokeStyle = 'rgba(255,0,0,0.05)';
 
     if (!this.startedDrawing) {
-        this.context.beginPath();
-        this.context.moveTo(x, y);
+        context.beginPath();
+        context.moveTo(x, y);
         this.startedDrawing = true;
-        this.context.lineTo(x + 1, y + 1);
+        context.lineTo(x + 1, y + 1);
 
     } else {
         const previousPoint = this.points[this.points.length - 1];
@@ -139,12 +147,12 @@ class FoggyWindow {
         const midpointX = parseInt((x + x0) / 2);
         const midpointY = parseInt((y + y0) / 2);
 
-        this.context.quadraticCurveTo(midpointX, midpointY, x, y);
+        context.quadraticCurveTo(midpointX, midpointY, x, y);
 
         // debugPoint(this.context, midpointX, midpointY);
     }
 
-    this.context.stroke();
+    context.stroke();
     this.points.push([x, y]);
   }
 
