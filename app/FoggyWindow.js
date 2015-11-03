@@ -172,27 +172,10 @@ export default class FoggyWindow {
     this.context.putImageData(blurredImgData, 0, 0)
   }
 
-  // clip() {
-  //   this.context.save();
-  //   this.context.beginPath();
-
-  //   const size = 200;
-  //   const x = this.canvas.width / 2 - size / 2;
-  //   const y = this.canvas.height / 2 - size / 2;
-
-  //   this.context.moveTo(x, y);
-  //   this.context.lineTo(x, y + size);
-  //   this.context.lineTo(x + size, y + size);
-  //   this.context.lineTo(x + size, y);
-  //   this.context.closePath();
-
-  //   this.context.clip();
-
-  //   this.unblurredImage.onload = () => {
-  //       this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size);
-  //   };
-
-  //   document.querySelector();
-  //   this.context.restore();
-  // }
+  savePic (filename){
+    var link = document.createElement('a');
+    link.download = filename;
+    link.href = this.canvas.toDataURL();
+    link.click();
+  }
 }
