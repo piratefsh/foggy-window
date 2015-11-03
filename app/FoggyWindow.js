@@ -5,12 +5,12 @@ import dock from 'images/dock.jpg';
 
 export default class FoggyWindow {
 
-  constructor() {
+  constructor(query) {
 
     this.debugger = new Debug();
 
     // setup canvas
-    this.canvas = document.querySelector('.foggy-window');
+    this.canvas = document.querySelector(query);
     this.overlay = new OverlayWindow();
 
     this.context = this.canvas.getContext('2d');
