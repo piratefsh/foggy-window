@@ -118,8 +118,7 @@ select {
   text-transform: none; }
 
 button,
-html input[type="button"],
-input[type="reset"],
+html input[type="button"], input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer; }
@@ -178,3 +177,20 @@ th {
 
 .foggy-window {
   background-color: grey; }
+
+.container {
+  position: relative; }
+  .container .controls {
+    padding: 20px;
+    position: absolute;
+    top: 0px;
+    right: 0px; }
+
+.btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  transition: background-color 0.5s; }
+  .btn:hover {
+    background-color: rgba(255, 255, 255, 0.3); }
