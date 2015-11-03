@@ -19,6 +19,7 @@ class FoggyWindow {
     this.scenery.src = dock;
     this.scenery.onload = () => {
         this.render();
+
         /// debug
         this.clip();
     };
@@ -76,27 +77,27 @@ class FoggyWindow {
         imgOffsetY = -(imgRenderHeight - this.canvas.height) / 2;
     }
 
-    return [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight]
+    return [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight];
   }
-  
+
   render() {
 
     this.startedDrawing = false;
-    let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery)
+    let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery);
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
-    
+
     // save unblurred image
-    this.unblurredImage = new Image() 
+    this.unblurredImage = new Image();
     this.unblurredImage.src = this.canvas.toDataURL();
 
-    this.lighten()
+    this.lighten();
     this.blur(this.blurRadius);
   }
 
-  lighten(){
-    this.context.fillStyle = 'rgba(255,255,255,0.1)'
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
-    this.context.stroke()
+  lighten() {
+    this.context.fillStyle = 'rgba(255,255,255,0.1)';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.stroke();
   }
 
   blur(radius) {
@@ -139,6 +140,7 @@ class FoggyWindow {
         const midpointY = parseInt((y + y0) / 2);
 
         this.context.quadraticCurveTo(midpointX, midpointY, x, y);
+
         // debugPoint(this.context, midpointX, midpointY);
     }
 
@@ -146,23 +148,23 @@ class FoggyWindow {
     this.points.push([x, y]);
   }
 
-  clip(){
-    this.context.save()
+  clip() {
+    this.context.save();
     this.context.beginPath();
 
-    const size = 200
-    const x = this.canvas.width/2 - size/2
-    const y = this.canvas.height/2 - size/2
+    const size = 200;
+    const x = this.canvas.width / 2 - size / 2;
+    const y = this.canvas.height / 2 - size / 2;
 
     this.context.moveTo(x, y);
-    this.context.lineTo(x, y+size);
-    this.context.lineTo(x+size, y+size);
-    this.context.lineTo(x+size, y);
+    this.context.lineTo(x, y + size);
+    this.context.lineTo(x + size, y + size);
+    this.context.lineTo(x + size, y);
     this.context.closePath();
 
-    this.context.clip()
-    this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size)
-    this.context.restore()
+    this.context.clip();
+    this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size);
+    this.context.restore();
   }
 }
 
