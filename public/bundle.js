@@ -145,7 +145,7 @@
 
 	        // draw image
 	        this.scenery = new Image();
-	        this.scenery.src = _imagesDockJpg2['default'];
+	        this.scenery.src = 'foggy-window/public' + _imagesDockJpg2['default'];
 	        this.scenery.onload = function () {
 	            _this.render();
 	            //this.clip();
