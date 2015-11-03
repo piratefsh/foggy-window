@@ -18,13 +18,14 @@ export default class FoggyWindow {
     this.startedDrawing = false;
     this.blurRadius = 10;
     this.points = [];
+    this.unblurredImageData = null;
 
     // draw image
     this.scenery = new Image();
     this.scenery.src = dock;
     this.scenery.onload = () => {
         this.render();
-        this.clip();
+        //this.clip();
     };
 
     let moveListener = (event) => this.draw(event);
@@ -93,8 +94,7 @@ export default class FoggyWindow {
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
 
     // save unblurred image
-    this.unblurredImage = new Image();
-    this.unblurredImage.src = this.canvas.toDataURL();
+    this.unblurredImageData = this.context.getImageData(0,0,this.canvas.width, this.canvas.height);
 
     this.lighten();
     this.blur(this.blurRadius);
@@ -150,30 +150,49 @@ export default class FoggyWindow {
     }
 
     context.stroke();
+
+    let overlayImgData = context.getImageData(0,0,this.overlay.canvas.width, this.overlay.canvas.height);
+    this.drawClear(overlayImgData);
     this.points.push([x, y]);
   }
 
-  clip() {
-    this.context.save();
-    this.context.beginPath();
+  drawClear(imgData){
 
-    const size = 200;
-    const x = this.canvas.width / 2 - size / 2;
-    const y = this.canvas.height / 2 - size / 2;
+    let data = imgData.data;
+    let blurredImgData = this.context.getImageData(0,0,this.canvas.width, this.canvas.height);
+    for (let i =0; i<data.length; i=i+4){
+        if (data[i] != 0 ){
+            blurredImgData.data[i]=this.unblurredImageData.data[i];
+            blurredImgData.data[i+1]=this.unblurredImageData.data[i+1];
+            blurredImgData.data[i+2]=this.unblurredImageData.data[i+2];
+            blurredImgData.data[i+3]=this.unblurredImageData.data[i+3];
+        }
+    }
 
-    this.context.moveTo(x, y);
-    this.context.lineTo(x, y + size);
-    this.context.lineTo(x + size, y + size);
-    this.context.lineTo(x + size, y);
-    this.context.closePath();
-
-    this.context.clip();
-
-    this.unblurredImage.onload = () => {
-        this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size);
-    };
-
-    document.querySelector();
-    this.context.restore();
+    this.context.putImageData(blurredImgData, 0, 0)
   }
+
+  // clip() {
+  //   this.context.save();
+  //   this.context.beginPath();
+
+  //   const size = 200;
+  //   const x = this.canvas.width / 2 - size / 2;
+  //   const y = this.canvas.height / 2 - size / 2;
+
+  //   this.context.moveTo(x, y);
+  //   this.context.lineTo(x, y + size);
+  //   this.context.lineTo(x + size, y + size);
+  //   this.context.lineTo(x + size, y);
+  //   this.context.closePath();
+
+  //   this.context.clip();
+
+  //   this.unblurredImage.onload = () => {
+  //       this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size);
+  //   };
+
+  //   document.querySelector();
+  //   this.context.restore();
+  // }
 }

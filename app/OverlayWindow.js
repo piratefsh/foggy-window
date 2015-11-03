@@ -5,7 +5,7 @@ export default class OverlayWindow {
         this.context = this.canvas.getContext('2d');
 
         //// debug
-        document.querySelector('body').appendChild(this.canvas);
+        //document.querySelector('body').appendChild(this.canvas);
     }
 
     setSize(width, height) {
