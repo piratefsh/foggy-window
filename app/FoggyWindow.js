@@ -1,18 +1,17 @@
 import StackBlur from 'stackblur-canvas';
+import OverlayWindow from 'OverlayWindow';
+import Debug from 'Debug';
 import dock from 'images/dock.jpg';
-import Debug from 'Debug'
 
 export default class FoggyWindow {
 
   constructor() {
 
-    this.debugger = new Debug()
+    this.debugger = new Debug();
 
     // setup canvas
     this.canvas = document.querySelector('.foggy-window');
-    this.overlayCanvas = document.createElement('canvas');
-    this.overlayContext = this.overlayCanvas.getContext('2d');
-    document.querySelector('body').appendChild(this.overlayCanvas);
+    this.overlay = new OverlayWindow();
 
     this.context = this.canvas.getContext('2d');
     this.context.scale(window.devicePixelRatio / 2, window.devicePixelRatio / 2);
@@ -86,9 +85,9 @@ export default class FoggyWindow {
 
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    this.overlayCanvas.width = window.innerWidth;
-    this.overlayCanvas.height = window.innerHeight;
-    
+
+    this.overlay.setSize(window.innerWidth, window.innerHeight);
+
     this.startedDrawing = false;
     let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery);
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
@@ -114,12 +113,9 @@ export default class FoggyWindow {
   }
 
   draw(event) {
-
-    //console.log(this.points)
-    //console.log(this.startedDrawing)
     let x, y;
 
-    const context = this.overlayContext;
+    const context = this.overlay.context;
 
     if ('clientX' in event) {
         x = event.clientX;
@@ -150,7 +146,7 @@ export default class FoggyWindow {
 
         context.quadraticCurveTo(midpointX, midpointY, x, y);
 
-        // this.debugger.point(this.overlayContext, midpointX, midpointY);
+        //// this.debugger.point(this.overlayContext, midpointX, midpointY);
     }
 
     context.stroke();
