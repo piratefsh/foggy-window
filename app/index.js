@@ -11,6 +11,7 @@ class FoggyWindow {
     this.context = this.canvas.getContext('2d');
     this.context.scale(window.devicePixelRatio / 2, window.devicePixelRatio / 2);
     this.startedDrawing = false;
+    this.blurRadius = 10;
     this.points = [];
 
     // draw image
@@ -18,6 +19,8 @@ class FoggyWindow {
     this.scenery.src = dock;
     this.scenery.onload = () => {
         this.render();
+        /// debug
+        this.clip();
     };
 
     let moveListener = (event) => this.draw(event);
@@ -46,12 +49,10 @@ class FoggyWindow {
     });
   }
 
-  render() {
-
-    this.startedDrawing = false;
+  getImageOffset(image) {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    const imgAspectRatio = this.scenery.width / this.scenery.height;
+    const imgAspectRatio = image.width / image.height;
     const canvasAspectRatio = this.canvas.width / this.canvas.height;
 
     let imgRenderHeight, imgRenderWidth, imgOffsetX, imgOffsetY;
@@ -75,9 +76,27 @@ class FoggyWindow {
         imgOffsetY = -(imgRenderHeight - this.canvas.height) / 2;
     }
 
-    this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
+    return [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight]
+  }
+  
+  render() {
 
-    this.blur(8);
+    this.startedDrawing = false;
+    let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery)
+    this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
+    
+    // save unblurred image
+    this.unblurredImage = new Image() 
+    this.unblurredImage.src = this.canvas.toDataURL();
+
+    this.lighten()
+    this.blur(this.blurRadius);
+  }
+
+  lighten(){
+    this.context.fillStyle = 'rgba(255,255,255,0.1)'
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    this.context.stroke()
   }
 
   blur(radius) {
@@ -104,6 +123,7 @@ class FoggyWindow {
 
     this.context.lineCap = 'round';
     this.context.lineWidth = 35;
+    this.context.strokeStyle = 'rgba(255,255,255,0.05)';
 
     if (!this.startedDrawing) {
         this.context.beginPath();
@@ -118,14 +138,31 @@ class FoggyWindow {
         const midpointX = parseInt((x + x0) / 2);
         const midpointY = parseInt((y + y0) / 2);
 
-        this.context.strokeStyle = 'rgba(255,255,255,0.05)';
-
         this.context.quadraticCurveTo(midpointX, midpointY, x, y);
-        debugPoint(this.context, midpointX, midpointY);
+        // debugPoint(this.context, midpointX, midpointY);
     }
 
     this.context.stroke();
     this.points.push([x, y]);
+  }
+
+  clip(){
+    this.context.save()
+    this.context.beginPath();
+
+    const size = 200
+    const x = this.canvas.width/2 - size/2
+    const y = this.canvas.height/2 - size/2
+
+    this.context.moveTo(x, y);
+    this.context.lineTo(x, y+size);
+    this.context.lineTo(x+size, y+size);
+    this.context.lineTo(x+size, y);
+    this.context.closePath();
+
+    this.context.clip()
+    this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size)
+    this.context.restore()
   }
 }
 
