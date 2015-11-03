@@ -1,2 +1,21 @@
+$space: 20px
+
 .foggy-window
     background-color:  grey
+
+.container
+    position: relative
+    .controls
+        padding: $space
+        position: absolute
+        top: 0px
+        right: 0px
+
+.btn
+    background-color: transparent
+    color: white
+    border: 2px solid rgba(white, 0.9)
+    padding: $space/2
+    transition: background-color 0.5s
+    &:hover
+        background-color: rgba(white, 0.3)
