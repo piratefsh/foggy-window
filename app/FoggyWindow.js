@@ -22,7 +22,7 @@ export default class FoggyWindow {
 
     // draw image
     this.scenery = new Image();
-    this.scenery.src = 'foggy-window/public' + dock;
+    this.scenery.src = dock.substr(1);
     this.scenery.onload = () => {
         this.render();
         //this.clip();
