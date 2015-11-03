@@ -102,39 +102,38 @@ class FoggyWindow {
         console.error('Unknown event sent to draw function');
     }
 
-
     this.context.lineCap = 'round';
     this.context.lineWidth = 35;
 
     if (!this.startedDrawing) {
         this.context.beginPath();
-        this.context.moveTo(x,y);
+        this.context.moveTo(x, y);
         this.startedDrawing = true;
-        this.context.lineTo(x+1,y+1);
+        this.context.lineTo(x + 1, y + 1);
 
     } else {
-        const previousPoint = this.points[this.points.length-1];
+        const previousPoint = this.points[this.points.length - 1];
         const x0 = previousPoint [0]; //x coordinate or previous point in path
         const y0 = previousPoint [1];
-        const midpointX = parseInt((x + x0)/2);
-        const midpointY = parseInt((y + y0)/2);
+        const midpointX = parseInt((x + x0) / 2);
+        const midpointY = parseInt((y + y0) / 2);
 
-        this.context.strokeStyle = 'rgba(255,255,255,0.05)'
-        
+        this.context.strokeStyle = 'rgba(255,255,255,0.05)';
+
         this.context.quadraticCurveTo(midpointX, midpointY, x, y);
-        debugPoint(this.context, midpointX, midpointY)
+        debugPoint(this.context, midpointX, midpointY);
     }
 
     this.context.stroke();
-    this.points.push([x,y]);
+    this.points.push([x, y]);
   }
 }
 
-function debugPoint(context, x, y){
-    context.fillStyle = "#ff0022";
+function debugPoint(context, x, y) {
+    context.fillStyle = '#ff0022';
     context.fillRect(x, y, 3, 3);
     context.stroke();
-    console.log(x, y)
+    console.log(x, y);
 }
 
 const foggy = new FoggyWindow();
