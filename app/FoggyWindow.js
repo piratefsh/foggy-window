@@ -168,7 +168,12 @@ export default class FoggyWindow {
     this.context.closePath();
 
     this.context.clip();
-    this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size);
+
+    this.unblurredImage.onload = () => {
+        this.context.drawImage(this.unblurredImage, x, y, size, size, x, y, size, size);
+    };
+
+    document.querySelector();
     this.context.restore();
   }
 }
