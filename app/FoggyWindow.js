@@ -31,6 +31,7 @@ export default class FoggyWindow {
         this.canvas.addEventListener('mousemove', moveListener);
     });
     this.canvas.addEventListener('touchstart', (event) => {
+        event.preventDefault();
         this.draw(event);
         this.canvas.addEventListener('touchmove', moveListener);
     });
