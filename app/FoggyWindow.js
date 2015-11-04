@@ -17,7 +17,7 @@ export default class FoggyWindow {
     this.startedDrawing = false;
     this.blurRadius = 18;
     this.lightenColor = 'rgba(255,255,255,0.14)';
-    this.points = [];
+    this.lines = [];
     this.unblurredImageData = null;
 
     let moveListener = (event) => this.draw(event);
@@ -41,12 +41,10 @@ export default class FoggyWindow {
         //console.log('mouseup')
         this.startedDrawing = false;
         event.target.removeEventListener('mousemove', moveListener);
-        this.points = [];
     });
     this.canvas.addEventListener('touchend', (event) => {
         this.startedDrawing = false;
         event.target.removeEventListener('touchmove', moveListener);
-        this.points = [];
     });
   }
 
@@ -136,19 +134,23 @@ export default class FoggyWindow {
     context.lineWidth = 35;
     context.strokeStyle = 'rgba(255,0,0,0.05)';
 
+    let currLine = this.lines[this.lines.length-1]
+
     if (!this.startedDrawing) {
+        currLine = []
+        this.lines.push(currLine)
         context.beginPath();
         context.moveTo(x, y);
         this.startedDrawing = true;
         context.lineTo(x + 1, y + 1);
 
     } 
-    else if (this.points.length < 2) {
+    else if (currLine.length < 2) {
         //not enough points to start drawing
     }
      else {
-        const twoPointsBack = this.points[this.points.length - 2];
-        const onePointBack = this.points[this.points.length - 1];
+        const twoPointsBack = currLine[currLine.length - 2];
+        const onePointBack = currLine[currLine.length - 1];
         const x0 = twoPointsBack [0]; //x coordinate or previous point in path
         const y0 = twoPointsBack [1];
 
@@ -162,7 +164,7 @@ export default class FoggyWindow {
         context.quadraticCurveTo(controlX, controlY, x, y);
     }
 
-    this.points.push([x, y]);
+    currLine.push([x, y]);
     context.stroke();
 
     let overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
