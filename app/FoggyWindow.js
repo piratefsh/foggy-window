@@ -142,21 +142,28 @@ export default class FoggyWindow {
         this.startedDrawing = true;
         context.lineTo(x+1, y+1);
         context.moveTo(x, y);
+        
+
+    } else if (this.points.length%2 == 1){
+        //nothing
 
     } else {
-        const previousPoint = this.points[this.points.length - 1];
-        const x0 = previousPoint [0]; //x coordinate or previous point in path
-        const y0 = previousPoint [1];
-        const midpointX = parseInt((x + x0) / 2);
-        const midpointY = parseInt((y + y0) / 2);
+        const twoPointsBack = this.points[this.points.length - 2];
+        const onePointBack = this.points[this.points.length -1];
+        const x0 = twoPointsBack [0]; //x coordinate or previous point in path
+        const y0 = twoPointsBack [1];
 
-        //// 
-        this.debugger.quadraticCurve(context, x0, y0, x, y);
-        //// this.debugger.point(this.overlayContext, midpointX, midpointY);
-        this.debugger.log(x0, y0, x, y)
-    }
+        const x1 = onePointBack [0]; //this is where the center of the curve should pass through
+        const y1 = onePointBack [1];
 
+        //formulas from: http://codetheory.in/calculate-control-point-to-make-your-canvas-curve-hit-a-specific-point/
+        const controlX = x1 * 2 - (x0+x)/2;
+        const controlY = y1 * 2 - (y0+y)/2; 
+
+        context.quadraticCurveTo(controlX, controlY, x, y); 
+    }  
     this.points.push([x, y]);
+    //this.debugger.point(context, x, y)
     context.stroke();
 
     let overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);

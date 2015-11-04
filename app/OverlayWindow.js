@@ -12,7 +12,7 @@ export default class OverlayWindow {
     setSize(width, height) {
         this.canvas.width = width;
         this.canvas.height = height;
-        this.debug()
+        //this.debug()
     }
 
     // generate clear parts given image data of unblurred image
