@@ -1,7 +1,7 @@
 import StackBlur from 'stackblur-canvas';
 import OverlayWindow from 'OverlayWindow';
 import Debug from 'Debug';
-import dock from 'images/dock.jpg';
+
 
 export default class FoggyWindow {
 

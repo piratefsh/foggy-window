@@ -1,5 +1,6 @@
 import 'styles/style.scss';
 import FoggyWindow from 'FoggyWindow';
+import dock from 'images/dock.jpg';
 
 const UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 const foggy = new FoggyWindow('.foggy-window');
@@ -7,7 +8,7 @@ const foggy = new FoggyWindow('.foggy-window');
 // default image
 let scenery = new Image();
 scenery.crossOrigin = 'Anonymous';
-scenery.src = 'http://localhost:5000/get/e8881593e82109cdd89341ad82a2c9ee.jpg';
+scenery.src = dock;
 foggy.setScenery(scenery);
 
 document.querySelector('#save-button').onclick = () => {foggy.savePic('masterpiece');};

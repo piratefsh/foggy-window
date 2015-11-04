@@ -61,13 +61,17 @@
 
 	var _FoggyWindow2 = _interopRequireDefault(_FoggyWindow);
 
+	var _imagesDockJpg = __webpack_require__(55);
+
+	var _imagesDockJpg2 = _interopRequireDefault(_imagesDockJpg);
+
 	var UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 	var foggy = new _FoggyWindow2['default']('.foggy-window');
 
 	// default image
 	var scenery = new Image();
 	scenery.crossOrigin = 'Anonymous';
-	scenery.src = 'http://localhost:5000/get/e8881593e82109cdd89341ad82a2c9ee.jpg';
+	scenery.src = _imagesDockJpg2['default'];
 	foggy.setScenery(scenery);
 
 	document.querySelector('#save-button').onclick = function () {
@@ -173,10 +177,6 @@
 	var _Debug = __webpack_require__(54);
 
 	var _Debug2 = _interopRequireDefault(_Debug);
-
-	var _imagesDockJpg = __webpack_require__(55);
-
-	var _imagesDockJpg2 = _interopRequireDefault(_imagesDockJpg);
 
 	var FoggyWindow = (function () {
 	    function FoggyWindow(query) {
