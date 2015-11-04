@@ -22,9 +22,10 @@ export default class FoggyWindow {
 
     // draw image
     this.scenery = new Image();
-    this.scenery.src = dock.substr(1);
+    this.scenery.src = dock;
     this.scenery.onload = () => {
         this.render();
+
         //this.clip();
     };
 
@@ -94,7 +95,7 @@ export default class FoggyWindow {
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
 
     // save unblurred image
-    this.unblurredImageData = this.context.getImageData(0,0,this.canvas.width, this.canvas.height);
+    this.unblurredImageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
     this.lighten();
     this.blur(this.blurRadius);
@@ -151,28 +152,17 @@ export default class FoggyWindow {
 
     context.stroke();
 
-    let overlayImgData = context.getImageData(0,0,this.overlay.canvas.width, this.overlay.canvas.height);
+    let overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
     this.drawClear(overlayImgData);
     this.points.push([x, y]);
   }
 
-  drawClear(imgData){
-
-    let data = imgData.data;
-    let blurredImgData = this.context.getImageData(0,0,this.canvas.width, this.canvas.height);
-    for (let i =0; i<data.length; i=i+4){
-        if (data[i] != 0 ){
-            blurredImgData.data[i]=this.unblurredImageData.data[i];
-            blurredImgData.data[i+1]=this.unblurredImageData.data[i+1];
-            blurredImgData.data[i+2]=this.unblurredImageData.data[i+2];
-            blurredImgData.data[i+3]=this.unblurredImageData.data[i+3];
-        }
-    }
-
-    this.context.putImageData(blurredImgData, 0, 0)
+  drawClear(imgData) {
+    const clearParts = this.overlay.makeClear(this.unblurredImageData)
+    this.context.drawImage(this.overlay.canvas, 0, 0);
   }
 
-  savePic (filename){
+  savePic(filename) {
     var link = document.createElement('a');
     link.download = filename;
     link.href = this.canvas.toDataURL();
