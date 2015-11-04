@@ -17,7 +17,6 @@ export default class FoggyWindow {
     this.startedDrawing = false;
     this.blurRadius = 18;
     this.lightenColor = 'rgba(255,255,255,0.14)';
-    this.lines = [];
     this.unblurredImageData = null;
 
     let moveListener = (event) => this.draw(event);
@@ -129,46 +128,14 @@ export default class FoggyWindow {
         console.error('Unknown event sent to draw function');
     }
 
-    context.lineCap = 'round';
-    context.lineJoin = 'round';
-    context.lineWidth = 35;
-    context.strokeStyle = 'rgba(255,0,0,0.05)';
-
-    let currLine = this.lines[this.lines.length-1]
+    // draw lines on overlay
+    const newLine = !this.startedDrawing;
+    const overlayImgData = this.overlay.draw(newLine, x, y);
+    this.drawClear(overlayImgData);
 
     if (!this.startedDrawing) {
-        currLine = []
-        this.lines.push(currLine)
-        context.beginPath();
-        context.moveTo(x, y);
         this.startedDrawing = true;
-        context.lineTo(x + 1, y + 1);
-
-    } 
-    else if (currLine.length < 2) {
-        //not enough points to start drawing
     }
-     else {
-        const twoPointsBack = currLine[currLine.length - 2];
-        const onePointBack = currLine[currLine.length - 1];
-        const x0 = twoPointsBack [0]; //x coordinate or previous point in path
-        const y0 = twoPointsBack [1];
-
-        const x1 = onePointBack [0]; //this is where the center of the curve should pass through
-        const y1 = onePointBack [1];
-
-        //formulas from: http://codetheory.in/calculate-control-point-to-make-your-canvas-curve-hit-a-specific-point/
-        const controlX = x1 * 2 - (x0 + x) / 2;
-        const controlY = y1 * 2 - (y0 + y) / 2;
-
-        context.quadraticCurveTo(controlX, controlY, x, y);
-    }
-
-    currLine.push([x, y]);
-    context.stroke();
-
-    let overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
-    this.drawClear(overlayImgData);
   }
 
   drawClear(imgData) {
