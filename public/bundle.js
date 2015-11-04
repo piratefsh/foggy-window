@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -61,11 +61,65 @@
 
 	var _FoggyWindow2 = _interopRequireDefault(_FoggyWindow);
 
+	var UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 	var foggy = new _FoggyWindow2['default']('.foggy-window');
 
+	// default image
+	var scenery = new Image();
+	scenery.crossOrigin = 'Anonymous';
+	scenery.src = 'http://localhost:5000/get/e8881593e82109cdd89341ad82a2c9ee.jpg';
+	foggy.setScenery(scenery);
+
 	document.querySelector('#save-button').onclick = function () {
-	  foggy.savePic("masterpiece");
+	    foggy.savePic('masterpiece');
 	};
+
+	var btnShowInput = document.getElementById('show-input-button');
+	var btnUpload = document.getElementById('upload-button');
+	var inputUpload = document.getElementById('upload-input');
+
+	btnShowInput.onclick = function (e) {
+	    toggleUploadState(true);
+	};
+
+	btnUpload.onclick = function (e) {
+	    var req = new XMLHttpRequest();
+	    var url = inputUpload.value;
+
+	    if (url.length < 1) {
+	        return;
+	    }
+
+	    // get image on CORS-friendly server
+	    req.onreadystatechange = function () {
+	        if (req.readyState == 4 && req.responseText) {
+	            var response = JSON.parse(req.responseText);
+	            var img = new Image();
+	            img.crossOrigin = 'Anonymous';
+	            img.src = response.new_url;
+	            foggy.setScenery(img);
+
+	            toggleUploadState(false);
+	        }
+	    };
+
+	    var params = 'url=' + url;
+	    req.open('POST', UPLOAD_SERVER_URL);
+	    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	    req.send(params);
+	};
+
+	function toggleUploadState(showUpload) {
+	    if (showUpload) {
+	        inputUpload.classList.remove('hidden');
+	        btnShowInput.classList.add('hidden');
+	        btnUpload.classList.remove('hidden');
+	    } else {
+	        inputUpload.classList.add('hidden');
+	        btnShowInput.classList.remove('hidden');
+	        btnUpload.classList.add('hidden');
+	    }
+	}
 
 /***/ },
 /* 2 */
@@ -143,14 +197,6 @@
 	        this.points = [];
 	        this.unblurredImageData = null;
 
-	        // draw image
-	        this.scenery = new Image();
-	        this.scenery.src = _imagesDockJpg2['default'].substr(1);
-	        this.scenery.onload = function () {
-	            _this.render();
-	            //this.clip();
-	        };
-
 	        var moveListener = function moveListener(event) {
 	            return _this.draw(event);
 	        };
@@ -182,6 +228,16 @@
 	    }
 
 	    _createClass(FoggyWindow, [{
+	        key: 'setScenery',
+	        value: function setScenery(scenery) {
+	            var _this2 = this;
+
+	            this.scenery = scenery;
+	            this.scenery.onload = function () {
+	                _this2.render();
+	            };
+	        }
+	    }, {
 	        key: 'getImageOffset',
 	        value: function getImageOffset(image) {
 	            var imgAspectRatio = image.width / image.height;
@@ -303,19 +359,8 @@
 	    }, {
 	        key: 'drawClear',
 	        value: function drawClear(imgData) {
-
-	            var data = imgData.data;
-	            var blurredImgData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-	            for (var i = 0; i < data.length; i = i + 4) {
-	                if (data[i] != 0) {
-	                    blurredImgData.data[i] = this.unblurredImageData.data[i];
-	                    blurredImgData.data[i + 1] = this.unblurredImageData.data[i + 1];
-	                    blurredImgData.data[i + 2] = this.unblurredImageData.data[i + 2];
-	                    blurredImgData.data[i + 3] = this.unblurredImageData.data[i + 3];
-	                }
-	            }
-
-	            this.context.putImageData(blurredImgData, 0, 0);
+	            var clearParts = this.overlay.makeClear(this.unblurredImageData);
+	            this.context.drawImage(this.overlay.canvas, 0, 0);
 	        }
 	    }, {
 	        key: 'savePic',
@@ -1637,6 +1682,28 @@
 	        value: function setSize(width, height) {
 	            this.canvas.width = width;
 	            this.canvas.height = height;
+	        }
+
+	        // generate clear parts given image data of unblurred image
+	    }, {
+	        key: 'makeClear',
+	        value: function makeClear(unblurredImageData) {
+	            var data = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height).data;
+	            var pixels = new Uint8ClampedArray(data.length);
+
+	            for (var i = 0; i < data.length; i = i + 4) {
+	                if (data[i] != 0) {
+	                    pixels[i] = unblurredImageData.data[i];
+	                    pixels[i + 1] = unblurredImageData.data[i + 1];
+	                    pixels[i + 2] = unblurredImageData.data[i + 2];
+	                    pixels[i + 3] = data[i + 3];
+	                }
+	            }
+
+	            var overlay = new ImageData(pixels, this.canvas.width, this.canvas.height);
+	            this.context.putImageData(overlay, 0, 0);
+
+	            return this.canvas;
 	        }
 	    }]);
 

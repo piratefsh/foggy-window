@@ -191,6 +191,21 @@ th {
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.9);
   padding: 10px;
-  transition: background-color 0.5s; }
+  transition: background-color 0.5s, opacity 0.5s; }
   .btn:hover {
     background-color: rgba(255, 255, 255, 0.3); }
+  .btn.btn-primary {
+    background-color: rgba(255, 255, 255, 0.4); }
+
+input[type='text'] {
+  padding: 10px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.5);
+  width: 350px;
+  color: white;
+  transition: background-color 0.5s, opacity 0.5s, display 0.5s 0.5s; }
+
+.hidden {
+  opacity: 0;
+  display: none; }
