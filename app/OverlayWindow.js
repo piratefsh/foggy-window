@@ -1,3 +1,4 @@
+import Debug from 'Debug';
 
 export default class OverlayWindow {
     constructor() {
@@ -5,12 +6,13 @@ export default class OverlayWindow {
         this.context = this.canvas.getContext('2d');
 
         //// debug
-        //document.querySelector('body').appendChild(this.canvas);
+        document.querySelector('body').appendChild(this.canvas);
     }
 
     setSize(width, height) {
         this.canvas.width = width;
         this.canvas.height = height;
+        this.debug()
     }
 
     // generate clear parts given image data of unblurred image
@@ -32,4 +34,17 @@ export default class OverlayWindow {
 
         return this.canvas
     }
+
+    debug(){
+        this.debugger = new Debug();
+        this.debugger.beginPath(this.context, 455,149)
+        this.debugger.quadraticCurve(this.context, 455,149,455,147)
+        this.debugger.quadraticCurve(this.context, 455,147,458,139)
+        this.debugger.quadraticCurve(this.context, 458,139,480,114)
+        this.debugger.quadraticCurve(this.context, 480,114,501,103)
+        this.debugger.quadraticCurve(this.context, 501,103,507,101)
+        this.debugger.quadraticCurve(this.context, 507,101,507,101)
+        this.debugger.quadraticCurve(this.context, 507,101,514,100)
+    }
+
 }

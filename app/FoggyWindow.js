@@ -23,7 +23,10 @@ export default class FoggyWindow {
 
     let moveListener = (event) => this.draw(event);
 
-    window.onresize = () => this.render();
+    window.onresize = () => {
+        this.render();
+        this.drawClear();
+    }
 
     this.canvas.addEventListener('mousedown', (event) => {
         //console.log('mousedown')
@@ -91,6 +94,7 @@ export default class FoggyWindow {
     this.overlay.setSize(window.innerWidth, window.innerHeight);
 
     this.startedDrawing = false;
+    
     let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery);
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
 
@@ -136,7 +140,8 @@ export default class FoggyWindow {
         context.beginPath();
         context.moveTo(x, y);
         this.startedDrawing = true;
-        context.lineTo(x + 1, y + 1);
+        context.lineTo(x+1, y+1);
+        context.moveTo(x, y);
 
     } else {
         const previousPoint = this.points[this.points.length - 1];
@@ -145,16 +150,17 @@ export default class FoggyWindow {
         const midpointX = parseInt((x + x0) / 2);
         const midpointY = parseInt((y + y0) / 2);
 
-        context.quadraticCurveTo(midpointX, midpointY, x, y);
-
+        //// 
+        this.debugger.quadraticCurve(context, x0, y0, x, y);
         //// this.debugger.point(this.overlayContext, midpointX, midpointY);
+        this.debugger.log(x0, y0, x, y)
     }
 
+    this.points.push([x, y]);
     context.stroke();
 
     let overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
     this.drawClear(overlayImgData);
-    this.points.push([x, y]);
   }
 
   drawClear(imgData) {
