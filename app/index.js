@@ -1,4 +1,5 @@
 import 'styles/style.scss';
+import 'font-awesome-webpack';
 import FoggyWindow from 'FoggyWindow';
 import dock from 'images/dock.jpg';
 
