@@ -2,7 +2,6 @@ import StackBlur from 'stackblur-canvas';
 import OverlayWindow from 'OverlayWindow';
 import Debug from 'Debug';
 
-
 export default class FoggyWindow {
 
   constructor(query) {
@@ -17,7 +16,7 @@ export default class FoggyWindow {
     this.context.scale(window.devicePixelRatio / 2, window.devicePixelRatio / 2);
     this.startedDrawing = false;
     this.blurRadius = 18;
-    this.lightenColor = 'rgba(255,255,255,0.14)'
+    this.lightenColor = 'rgba(255,255,255,0.14)';
     this.points = [];
     this.unblurredImageData = null;
 
@@ -26,7 +25,7 @@ export default class FoggyWindow {
     window.onresize = () => {
         this.render();
         this.drawClear();
-    }
+    };
 
     this.canvas.addEventListener('mousedown', (event) => {
         //console.log('mousedown')
@@ -51,7 +50,7 @@ export default class FoggyWindow {
     });
   }
 
-  setScenery(scenery){
+  setScenery(scenery) {
     this.scenery = scenery;
     this.scenery.onload = () => {
         this.render();
@@ -94,7 +93,7 @@ export default class FoggyWindow {
     this.overlay.setSize(window.innerWidth, window.innerHeight);
 
     this.startedDrawing = false;
-    
+
     let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery);
     this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
 
@@ -133,6 +132,7 @@ export default class FoggyWindow {
     }
 
     context.lineCap = 'round';
+    context.lineJoin = 'round';
     context.lineWidth = 35;
     context.strokeStyle = 'rgba(255,0,0,0.05)';
 
@@ -140,16 +140,15 @@ export default class FoggyWindow {
         context.beginPath();
         context.moveTo(x, y);
         this.startedDrawing = true;
-        context.lineTo(x+1, y+1);
-        context.moveTo(x, y);
-        
+        context.lineTo(x + 1, y + 1);
 
-    } else if (this.points.length%2 == 1){
-        //nothing
-
-    } else {
+    } 
+    else if (this.points.length < 2) {
+        //not enough points to start drawing
+    }
+     else {
         const twoPointsBack = this.points[this.points.length - 2];
-        const onePointBack = this.points[this.points.length -1];
+        const onePointBack = this.points[this.points.length - 1];
         const x0 = twoPointsBack [0]; //x coordinate or previous point in path
         const y0 = twoPointsBack [1];
 
@@ -157,13 +156,13 @@ export default class FoggyWindow {
         const y1 = onePointBack [1];
 
         //formulas from: http://codetheory.in/calculate-control-point-to-make-your-canvas-curve-hit-a-specific-point/
-        const controlX = x1 * 2 - (x0+x)/2;
-        const controlY = y1 * 2 - (y0+y)/2; 
+        const controlX = x1 * 2 - (x0 + x) / 2;
+        const controlY = y1 * 2 - (y0 + y) / 2;
 
-        context.quadraticCurveTo(controlX, controlY, x, y); 
-    }  
+        context.quadraticCurveTo(controlX, controlY, x, y);
+    }
+
     this.points.push([x, y]);
-    //this.debugger.point(context, x, y)
     context.stroke();
 
     let overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
@@ -171,7 +170,7 @@ export default class FoggyWindow {
   }
 
   drawClear(imgData) {
-    const clearParts = this.overlay.makeClear(this.unblurredImageData)
+    const clearParts = this.overlay.makeClear(this.unblurredImageData);
     this.context.drawImage(this.overlay.canvas, 0, 0);
   }
 
