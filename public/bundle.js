@@ -193,7 +193,8 @@
 	        this.context = this.canvas.getContext('2d');
 	        this.context.scale(window.devicePixelRatio / 2, window.devicePixelRatio / 2);
 	        this.startedDrawing = false;
-	        this.blurRadius = 10;
+	        this.blurRadius = 18;
+	        this.lightenColor = 'rgba(255,255,255,0.14)';
 	        this.points = [];
 	        this.unblurredImageData = null;
 
@@ -211,6 +212,7 @@
 	            _this.canvas.addEventListener('mousemove', moveListener);
 	        });
 	        this.canvas.addEventListener('touchstart', function (event) {
+	            event.preventDefault();
 	            _this.draw(event);
 	            _this.canvas.addEventListener('touchmove', moveListener);
 	        });
@@ -300,7 +302,7 @@
 	    }, {
 	        key: 'lighten',
 	        value: function lighten() {
-	            this.context.fillStyle = 'rgba(255,255,255,0.1)';
+	            this.context.fillStyle = this.lightenColor;
 	            this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	            this.context.stroke();
 	        }

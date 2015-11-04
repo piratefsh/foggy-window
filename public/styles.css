@@ -180,11 +180,29 @@ th {
 
 .container {
   position: relative; }
+  .container .about {
+    padding: 20px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: white; }
+    .container .about h1 {
+      margin-top: 0px;
+      margin-bottom: 10px; }
+      .container .about h1 small {
+        font-size: 0.6em;
+        color: rgba(255, 255, 255, 0.8); }
   .container .controls {
     padding: 20px;
     position: absolute;
     top: 0px;
     right: 0px; }
+    @media (max-width: 768px) {
+      .container .controls {
+        bottom: 0px;
+        top: auto;
+        right: auto;
+        left: 0px; } }
 
 .btn {
   background-color: transparent;
@@ -198,6 +216,7 @@ th {
     background-color: rgba(255, 255, 255, 0.4); }
 
 input[type='text'] {
+  box-sizing: border-box;
   padding: 10px;
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.9);
@@ -205,6 +224,10 @@ input[type='text'] {
   width: 350px;
   color: white;
   transition: background-color 0.5s, opacity 0.5s, display 0.5s 0.5s; }
+  @media (max-width: 768px) {
+    input[type='text'] {
+      width: 100%;
+      margin-bottom: 10px; } }
 
 .hidden {
   opacity: 0;
