@@ -1,6 +1,61 @@
 import 'styles/style.scss';
-import FoggyWindow from 'FoggyWindow'
+import FoggyWindow from 'FoggyWindow';
 
+const UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 const foggy = new FoggyWindow('.foggy-window');
 
-document.querySelector('#save-button').onclick = () => {foggy.savePic("masterpiece")};
+// default image
+let scenery = new Image();
+scenery.crossOrigin = 'Anonymous';
+scenery.src = 'http://localhost:5000/get/e8881593e82109cdd89341ad82a2c9ee.jpg';
+foggy.setScenery(scenery);
+
+document.querySelector('#save-button').onclick = () => {foggy.savePic('masterpiece');};
+
+const btnShowInput = document.getElementById('show-input-button');
+const btnUpload = document.getElementById('upload-button');
+const inputUpload = document.getElementById('upload-input');
+
+btnShowInput.onclick = (e) => {
+    toggleUploadState(true)
+};
+
+btnUpload.onclick = (e) => {
+    const req = new XMLHttpRequest();
+    const url = inputUpload.value;
+
+    if(url.length < 1) {
+        return 
+    }
+
+    // get image on CORS-friendly server
+    req.onreadystatechange = function() {
+        if (req.readyState == 4 && req.responseText) {
+            var response = JSON.parse(req.responseText);
+            var img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = response.new_url;
+            foggy.setScenery(img)
+
+            toggleUploadState(false)
+        }
+    };
+
+    const params = 'url=' + url;
+    req.open('POST', UPLOAD_SERVER_URL);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.send(params);
+};
+
+function toggleUploadState(showUpload){
+    if (showUpload){
+        inputUpload.classList.remove('hidden');
+        btnShowInput.classList.add('hidden');
+        btnUpload.classList.remove('hidden');
+    }
+    else{
+        inputUpload.classList.add('hidden');
+        btnShowInput.classList.remove('hidden');
+        btnUpload.classList.add('hidden');
+    }
+}

@@ -1,5 +1,5 @@
 $space: 20px
-
+$border-white: 2px solid rgba(white, 0.9)
 .foggy-window
     background-color:  grey
 
@@ -14,8 +14,25 @@ $space: 20px
 .btn
     background-color: transparent
     color: white
-    border: 2px solid rgba(white, 0.9)
+    border: $border-white
     padding: $space/2
-    transition: background-color 0.5s
+    transition: background-color 0.5s, opacity 0.5s
     &:hover
         background-color: rgba(white, 0.3)
+    &.btn-primary
+        background-color: rgba(white, 0.4)
+        
+
+
+input[type='text']
+    padding: $space/2
+    background-color: transparent
+    border: $border-white 
+    border-color: rgba(white, 0.5)
+    width: 350px
+    color: white
+    transition: background-color 0.5s, opacity 0.5s, display 0.5s 0.5s
+
+.hidden
+    opacity: 0
+    display: none

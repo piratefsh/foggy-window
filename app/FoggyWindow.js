@@ -20,15 +20,6 @@ export default class FoggyWindow {
     this.points = [];
     this.unblurredImageData = null;
 
-    // draw image
-    this.scenery = new Image();
-    this.scenery.src = dock;
-    this.scenery.onload = () => {
-        this.render();
-
-        //this.clip();
-    };
-
     let moveListener = (event) => this.draw(event);
 
     window.onresize = () => this.render();
@@ -53,6 +44,13 @@ export default class FoggyWindow {
         event.target.removeEventListener('touchmove', moveListener);
         this.points = [];
     });
+  }
+
+  setScenery(scenery){
+    this.scenery = scenery;
+    this.scenery.onload = () => {
+        this.render();
+    };
   }
 
   getImageOffset(image) {

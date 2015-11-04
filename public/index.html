@@ -8,7 +8,11 @@
     <div class="container">
     <canvas class="foggy-window"></canvas>
     <div class="controls">
-        <button class='btn' id="save-button">Export as PNG</button>
+
+    <input type='text' id='upload-input' class="hidden" placeholder="http://example.com/image.jpg"/>
+        <button class='btn' id="show-input-button">Upload from URL</button>
+        <button class='btn hidden' id="upload-button">Upload</button>
+        <button class='btn' id="save-button">Download</button>
     </div>
     </div>
     <script src="bundle.js"></script>
