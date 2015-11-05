@@ -1,5 +1,5 @@
 {
     "preset": "airbnb",
     "requireCurlyBraces": false,
-    "validateIndentation": "\t"
+    "validateIndentation": 4
 }

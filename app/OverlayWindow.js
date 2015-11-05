@@ -9,7 +9,7 @@ export default class OverlayWindow {
         this.lines = [];
 
         //// debug
-        // document.querySelector('body').appendChild(this.canvas);
+        document.querySelector('#canvases').appendChild(this.canvas);
     }
 
     setSize(width, height) {
@@ -58,6 +58,7 @@ export default class OverlayWindow {
         context.stroke();
 
         let overlayImgData = context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+            
         return overlayImgData;
     }
 
