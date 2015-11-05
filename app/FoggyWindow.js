@@ -99,7 +99,7 @@ export default class FoggyWindow {
 
         let [imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight] = this.getImageOffset(this.scenery);
         this.context.drawImage(this.scenery, imgOffsetX, imgOffsetY, imgRenderWidth, imgRenderHeight);
-        
+
         // save unblurred image
         this.unblurredImageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
@@ -120,6 +120,11 @@ export default class FoggyWindow {
     }
 
     draw(event) {
+        // don't allow drawing as window is fogging
+        if (this.overlay.isTransitioning) {
+            return;
+        }
+
         // stop fog over timer
         this.timer.reset();
 
@@ -139,39 +144,38 @@ export default class FoggyWindow {
 
         // draw lines on overlay
         const newLine = !this.startedDrawing;
-        const overlayImgData = this.overlay.draw(newLine, x, y);
-        this.drawClear(overlayImgData);
+        this.overlay.draw(newLine, x, y);
+        this.overlay.drawClear(this.unblurredImageData);
 
         if (!this.startedDrawing) {
             this.startedDrawing = true;
         }
     }
 
-    drawClear(imgData) {
-        const clearParts = this.overlay.makeClear(this.unblurredImageData);
-        this.overlay.context.drawImage(this.overlay.canvas, 0, 0);
-    }
-
     fogOver(time) {
-        let frames = 10
-        let startTime = null
+        let startTime = null;
+        this.overlay.isTransitioning = true;
         let fade = (timestamp)=> {
-            if (startTime == null){
-                startTime = timestamp
-            }
-            let progress = timestamp - startTime;
-            let opacity = 1 - progress/time;
-                
-            if(Math.floor(progress) % 50 == 0){
-                this.overlay.canvas.style.opacity = opacity
-                if(opacity <= 0){
-                    this.overlay.context.clearRect(0, 0, this.overlay.canvas.width, this.overlay.canvas.height)
-                    this.overlay.canvas.style.opacity = 1;
-                }
+            if (startTime == null) {
+                startTime = timestamp;
             }
 
-            if (opacity >= 0){
+            // calculate and set opacity
+            let progress = timestamp - startTime;
+            let opacity = 1 - progress / time;
+
+            this.overlay.setOpacity(opacity);
+
+            // keep going till transparent
+            if (opacity >= 0) {
                 requestAnimationFrame(fade);
+            }
+
+            // if done, clear overlay and show again
+            else {
+                this.overlay.context.clearRect(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
+                this.overlay.setOpacity(1);
+                this.overlay.isTransitioning = false;
             }
         };
 

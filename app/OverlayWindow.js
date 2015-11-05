@@ -7,6 +7,7 @@ export default class OverlayWindow {
         this.context = this.canvas.getContext('2d');
 
         this.lines = [];
+        this.isTransitioning = false;
 
         //// debug
         document.querySelector('#canvases').appendChild(this.canvas);
@@ -60,6 +61,15 @@ export default class OverlayWindow {
         let overlayImgData = context.getImageData(0, 0, this.canvas.width, this.canvas.height);
             
         return overlayImgData;
+    }
+
+    drawClear(unblurredImageData) {
+        const clearParts = this.makeClear(unblurredImageData);
+        this.context.drawImage(this.canvas, 0, 0);
+    }
+
+    setOpacity(opacity){
+        this.canvas.style.opacity = opacity
     }
 
     // generate clear parts given image data of unblurred image

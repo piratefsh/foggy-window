@@ -22,9 +22,9 @@ $border-white: 2px solid rgba(white, 0.9)
                 font-size: 0.6em
                 color: rgba(white, 0.8)
     .controls
+        position: absolute
         font-family: 'Gloria Hallelujah'
         padding: $space
-        position: absolute
         top: 0px
         right: 0px
         @media(max-width: 768px)
@@ -35,7 +35,7 @@ $border-white: 2px solid rgba(white, 0.9)
 
 #canvases 
     position: relative
-    canvas
+    canvas + canvas
         position: absolute
         top: 0px
 .btn
