@@ -1,7 +1,7 @@
 import StackBlur from 'stackblur-canvas';
-import OverlayWindow from 'OverlayWindow';
-import Debug from 'Debug';
-import Timer from 'Timer';
+import OverlayWindow from './OverlayWindow';
+import Debug from 'util/Debug';
+import Timer from 'util/Timer';
 
 export default class FoggyWindow {
 
@@ -33,7 +33,6 @@ export default class FoggyWindow {
         };
 
         this.overlay.canvas.addEventListener('mousedown', (event) => {
-            //console.log('mousedown')
             this.draw(event);
             this.overlay.canvas.addEventListener('mousemove', moveListener);
         });
@@ -43,7 +42,6 @@ export default class FoggyWindow {
             this.overlay.canvas.addEventListener('touchmove', moveListener);
         });
         this.overlay.canvas.addEventListener('mouseup', (event) => {
-            //console.log('mouseup')
             this.startedDrawing = false;
             event.target.removeEventListener('mousemove', moveListener);
         });

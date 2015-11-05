@@ -1,9 +1,9 @@
 import 'styles/style.scss';
 import 'font-awesome-webpack';
-import FoggyWindow from 'FoggyWindow';
-import images from 'Images';
+import FoggyWindow from 'components/FoggyWindow';
+import images from 'components/SceneryImages';
 
-const UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
+const UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/file';
 const foggy = new FoggyWindow('.foggy-window');
 const btnSave = document.querySelector('#save-button');
 const btnShowInput = document.getElementById('show-input-button');
@@ -27,9 +27,9 @@ btnShowInput.onclick = (e) => {
 
 btnUpload.onclick = (e) => {
     const req = new XMLHttpRequest();
-    const url = inputUpload.value;
+    const file = inputUpload.files[0];
 
-    if (url.length < 1) {
+    if (!file) {
         return;
     }
 
@@ -37,19 +37,25 @@ btnUpload.onclick = (e) => {
     req.onreadystatechange = function() {
         if (req.readyState == 4 && req.responseText) {
             var response = JSON.parse(req.responseText);
-            var img = new Image();
-            img.crossOrigin = 'Anonymous';
-            img.src = response.new_url;
-            foggy.setScenery(img);
+            
+            if(response.success){
+                var img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = response.new_url;
+                foggy.setScenery(img);
 
-            toggleUploadState(false);
+                toggleUploadState(false);
+            }
+            else{
+                window.alert('Invalid image. Please upload image with .jpg, .gif or .png extensions only')
+            }
         }
     };
 
-    const params = 'url=' + url;
+    const formData = new FormData();
+    formData.append("file", file);
     req.open('POST', UPLOAD_SERVER_URL);
-    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    req.send(params);
+    req.send(formData);
 };
 
 function toggleUploadState(showUpload) {
