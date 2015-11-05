@@ -1,4 +1,4 @@
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+@import url(https://fonts.googleapis.com/css?family=Gloria+Hallelujah);/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -187,22 +187,38 @@ th {
     left: 0px;
     color: white; }
     .container .about h1 {
-      margin-top: 0px;
-      margin-bottom: 10px; }
+      margin-top: -18px;
+      margin-bottom: 10px;
+      font-size: 2.6em;
+      font-family: 'Gloria Hallelujah'; }
       .container .about h1 small {
         font-size: 0.6em;
         color: rgba(255, 255, 255, 0.8); }
+      @media (max-width: 768px) {
+        .container .about h1 {
+          font-size: 2.4em; }
+          .container .about h1 small {
+            display: block; } }
   .container .controls {
-    padding: 20px;
     position: absolute;
+    font-family: 'Gloria Hallelujah';
+    padding: 20px;
     top: 0px;
     right: 0px; }
     @media (max-width: 768px) {
       .container .controls {
-        bottom: 0px;
+        bottom: 40px;
         top: auto;
         right: auto;
         left: 0px; } }
+
+#canvases {
+  position: relative;
+  max-height: 100vh;
+  overflow: hidden; }
+  #canvases canvas + canvas {
+    position: absolute;
+    top: 0px; }
 
 .btn {
   background-color: transparent;
@@ -232,3 +248,18 @@ input[type='text'] {
 .hidden {
   opacity: 0;
   display: none; }
+
+footer {
+  position: absolute;
+  bottom: 20px;
+  padding: 0 20px;
+  font-size: 0.8em;
+  color: white; }
+  footer a {
+    opacity: 1;
+    color: white;
+    transition: color 0.5s; }
+    footer a:visited {
+      opacity: 1; }
+    footer a:hover, footer a:focus {
+      color: #eee; }
