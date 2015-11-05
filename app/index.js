@@ -1,7 +1,7 @@
 import 'styles/style.scss';
 import 'font-awesome-webpack';
 import FoggyWindow from 'FoggyWindow';
-import dock from 'images/dock.jpg';
+import images from 'Images';
 
 const UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 const foggy = new FoggyWindow('.foggy-window');
@@ -12,8 +12,9 @@ const inputUpload = document.getElementById('upload-input');
 
 // default image
 let scenery = new Image();
+const randomImage = Math.floor(Math.random() * images.length)
 scenery.crossOrigin = 'Anonymous';
-scenery.src = dock;
+scenery.src = images[randomImage];
 foggy.setScenery(scenery);
 
 btnSave.onclick = (e) => {
