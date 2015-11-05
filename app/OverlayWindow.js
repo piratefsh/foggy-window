@@ -16,17 +16,18 @@ export default class OverlayWindow {
     setSize(width, height) {
         this.canvas.width = width;
         this.canvas.height = height;
-
-        //// this.debug()
     }
 
+    // draw new line or continue from previous
     draw(newLine, x, y) {
         const context = this.context;
 
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.lineWidth = 35;
-        context.strokeStyle = 'rgba(255,0,0,0.05)';
+        context.strokeStyle = 'rgba(255,0,0,0.25)';
+        context.shadowColor = 'rgba(255,0,0,1)'
+        context.shadowBlur = 1
 
         let currLine = this.lines[this.lines.length - 1];
 
@@ -59,26 +60,35 @@ export default class OverlayWindow {
         context.stroke();
 
         let overlayImgData = context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-            
+
         return overlayImgData;
     }
 
+    // empty canvas
+    clear() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    }
+
+    // set canvas opacity
+    setOpacity(opacity) {
+        this.canvas.style.opacity = opacity;
+    }
+
+    // draw unblurry parts
     drawClear(unblurredImageData) {
         const clearParts = this.makeClear(unblurredImageData);
-        this.context.drawImage(this.canvas, 0, 0);
+        this.context.putImageData(clearParts, 0, 0);
     }
 
-    setOpacity(opacity){
-        this.canvas.style.opacity = opacity
-    }
-
-    // generate clear parts given image data of unblurred image
+    // generate clear parts given image data of unblurred image to be drawn
+    // returns ImageData of clear parts
     makeClear(unblurredImageData) {
         let data = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height).data;
         let pixels = new Uint8ClampedArray(data.length);
 
         for (let i = 0; i < data.length; i = i + 4) {
-            if (data[i] != 0) {
+            if (data[i] != 0 || data[i + 1] != 0 || data[i + 3] != 0) {
                 pixels[i] = unblurredImageData.data[i];
                 pixels[i + 1] = unblurredImageData.data[i + 1];
                 pixels[i + 2] = unblurredImageData.data[i + 2];
@@ -87,20 +97,7 @@ export default class OverlayWindow {
         }
 
         let overlay = new ImageData(pixels, this.canvas.width, this.canvas.height);
-        this.context.putImageData(overlay, 0, 0);
 
-        return this.canvas;
-    }
-
-    debug() {
-        this.debugger = new Debug();
-        this.debugger.beginPath(this.context, 455, 149);
-        this.debugger.quadraticCurve(this.context, 455, 149, 455, 147);
-        this.debugger.quadraticCurve(this.context, 455, 147, 458, 139);
-        this.debugger.quadraticCurve(this.context, 458, 139, 480, 114);
-        this.debugger.quadraticCurve(this.context, 480, 114, 501, 103);
-        this.debugger.quadraticCurve(this.context, 501, 103, 507, 101);
-        this.debugger.quadraticCurve(this.context, 507, 101, 507, 101);
-        this.debugger.quadraticCurve(this.context, 507, 101, 514, 100);
+        return overlay;
     }
 }
