@@ -76,9 +76,9 @@
 
 	var _FoggyWindow2 = _interopRequireDefault(_FoggyWindow);
 
-	var _imagesDockJpg = __webpack_require__(79);
+	var _Images = __webpack_require__(79);
 
-	var _imagesDockJpg2 = _interopRequireDefault(_imagesDockJpg);
+	var _Images2 = _interopRequireDefault(_Images);
 
 	var UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 	var foggy = new _FoggyWindow2['default']('.foggy-window');
@@ -89,8 +89,9 @@
 
 	// default image
 	var scenery = new Image();
+	var randomImage = Math.floor(Math.random() * _Images2['default'].length);
 	scenery.crossOrigin = 'Anonymous';
-	scenery.src = _imagesDockJpg2['default'];
+	scenery.src = _Images2['default'][randomImage];
 	foggy.setScenery(scenery);
 
 	btnSave.onclick = function (e) {
@@ -2307,7 +2308,126 @@
 /* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _interopRequireDefault = __webpack_require__(15)['default'];
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _imagesBrooklynbridgeJpg = __webpack_require__(80);
+
+	var _imagesBrooklynbridgeJpg2 = _interopRequireDefault(_imagesBrooklynbridgeJpg);
+
+	var _imagesColdMorningJpg = __webpack_require__(81);
+
+	var _imagesColdMorningJpg2 = _interopRequireDefault(_imagesColdMorningJpg);
+
+	var _imagesDarkStreetJpg = __webpack_require__(82);
+
+	var _imagesDarkStreetJpg2 = _interopRequireDefault(_imagesDarkStreetJpg);
+
+	var _imagesDockJpg = __webpack_require__(83);
+
+	var _imagesDockJpg2 = _interopRequireDefault(_imagesDockJpg);
+
+	var _imagesEveningSkylineJpg = __webpack_require__(84);
+
+	var _imagesEveningSkylineJpg2 = _interopRequireDefault(_imagesEveningSkylineJpg);
+
+	var _imagesForestJpg = __webpack_require__(85);
+
+	var _imagesForestJpg2 = _interopRequireDefault(_imagesForestJpg);
+
+	var _imagesManhattanNightJpg = __webpack_require__(86);
+
+	var _imagesManhattanNightJpg2 = _interopRequireDefault(_imagesManhattanNightJpg);
+
+	var _imagesPuppiesJpg = __webpack_require__(87);
+
+	var _imagesPuppiesJpg2 = _interopRequireDefault(_imagesPuppiesJpg);
+
+	var _imagesSnowyStreetJpg = __webpack_require__(88);
+
+	var _imagesSnowyStreetJpg2 = _interopRequireDefault(_imagesSnowyStreetJpg);
+
+	var _imagesBonticouJpg = __webpack_require__(89);
+
+	var _imagesBonticouJpg2 = _interopRequireDefault(_imagesBonticouJpg);
+
+	var _imagesNiagaraJpg = __webpack_require__(90);
+
+	var _imagesNiagaraJpg2 = _interopRequireDefault(_imagesNiagaraJpg);
+
+	exports['default'] = [_imagesBrooklynbridgeJpg2['default'], _imagesColdMorningJpg2['default'], _imagesDarkStreetJpg2['default'], _imagesDockJpg2['default'], _imagesEveningSkylineJpg2['default'], _imagesForestJpg2['default'], _imagesManhattanNightJpg2['default'], _imagesPuppiesJpg2['default'], _imagesSnowyStreetJpg2['default'], _imagesBonticouJpg2['default'], _imagesNiagaraJpg2['default']];
+	module.exports = exports['default'];
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "cb7d9efe1ac489ed31d6980b24d4386f.jpg"
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "d75254e298831885ffe965d3d6ae2af6.jpg"
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "fe570ffe5f1b38585304678a1ddc256e.jpg"
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = __webpack_require__.p + "cbf86da34060f5e81d7d657ea649d92d.jpg"
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "ef5996778330cdf8bcb7a481337a8098.jpg"
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "3d68f313fb4fe05ff8fb32416518b524.jpg"
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "f3a5b1f2c74ab72741a4d90cf8eb0ea8.jpg"
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "838ce686e815c05042d0e36ab463f22c.jpg"
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "5ca66a34b56f74bb4a205ac241168e23.jpg"
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "15513107496f74256151109825f133f5.jpg"
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "bcbc7ea897478ace6258e17ded2beb11.jpg"
 
 /***/ }
 /******/ ]);
