@@ -1,7 +1,7 @@
 import StackBlur from 'stackblur-canvas';
 import OverlayWindow from 'OverlayWindow';
-import Debug from 'Debug';
-import Timer from 'Timer';
+import Debug from 'util/Debug';
+import Timer from 'util/Timer';
 
 export default class FoggyWindow {
 

@@ -1,4 +1,4 @@
-import Debug from 'Debug';
+import Debug from 'util/Debug';
 
 export default class OverlayWindow {
 
