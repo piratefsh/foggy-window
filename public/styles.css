@@ -233,7 +233,7 @@ body {
   .btn.btn-primary {
     background-color: rgba(255, 255, 255, 0.4); }
 
-input[type='text'] {
+input {
   box-sizing: border-box;
   padding: 10px;
   background-color: transparent;
@@ -243,7 +243,7 @@ input[type='text'] {
   color: white;
   transition: background-color 0.5s, opacity 0.5s, display 0.5s 0.5s; }
   @media (max-width: 768px) {
-    input[type='text'] {
+    input {
       width: 100%;
       margin-bottom: 10px; } }
 

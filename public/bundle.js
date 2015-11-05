@@ -72,16 +72,16 @@
 
 	__webpack_require__(20);
 
-	var _FoggyWindow = __webpack_require__(30);
+	var _componentsFoggyWindow = __webpack_require__(30);
 
-	var _FoggyWindow2 = _interopRequireDefault(_FoggyWindow);
+	var _componentsFoggyWindow2 = _interopRequireDefault(_componentsFoggyWindow);
 
-	var _Images = __webpack_require__(79);
+	var _componentsSceneryImages = __webpack_require__(79);
 
-	var _Images2 = _interopRequireDefault(_Images);
+	var _componentsSceneryImages2 = _interopRequireDefault(_componentsSceneryImages);
 
-	var UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
-	var foggy = new _FoggyWindow2['default']('.foggy-window');
+	var UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/file';
+	var foggy = new _componentsFoggyWindow2['default']('.foggy-window');
 	var btnSave = document.querySelector('#save-button');
 	var btnShowInput = document.getElementById('show-input-button');
 	var btnUpload = document.getElementById('upload-button');
@@ -89,9 +89,9 @@
 
 	// default image
 	var scenery = new Image();
-	var randomImage = Math.floor(Math.random() * _Images2['default'].length);
+	var randomImage = Math.floor(Math.random() * _componentsSceneryImages2['default'].length);
 	scenery.crossOrigin = 'Anonymous';
-	scenery.src = _Images2['default'][randomImage];
+	scenery.src = _componentsSceneryImages2['default'][randomImage];
 	foggy.setScenery(scenery);
 
 	btnSave.onclick = function (e) {
@@ -104,9 +104,9 @@
 
 	btnUpload.onclick = function (e) {
 	    var req = new XMLHttpRequest();
-	    var url = inputUpload.value;
+	    var file = inputUpload.files[0];
 
-	    if (url.length < 1) {
+	    if (!file) {
 	        return;
 	    }
 
@@ -114,19 +114,24 @@
 	    req.onreadystatechange = function () {
 	        if (req.readyState == 4 && req.responseText) {
 	            var response = JSON.parse(req.responseText);
-	            var img = new Image();
-	            img.crossOrigin = 'Anonymous';
-	            img.src = response.new_url;
-	            foggy.setScenery(img);
 
-	            toggleUploadState(false);
+	            if (response.success) {
+	                var img = new Image();
+	                img.crossOrigin = 'Anonymous';
+	                img.src = response.new_url;
+	                foggy.setScenery(img);
+
+	                toggleUploadState(false);
+	            } else {
+	                window.alert('Invalid image. Please upload image with .jpg, .gif or .png extensions only');
+	            }
 	        }
 	    };
 
-	    var params = 'url=' + url;
+	    var formData = new FormData();
+	    formData.append("file", file);
 	    req.open('POST', UPLOAD_SERVER_URL);
-	    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	    req.send(params);
+	    req.send(formData);
 	};
 
 	function toggleUploadState(showUpload) {
@@ -553,13 +558,13 @@
 
 	var _OverlayWindow2 = _interopRequireDefault(_OverlayWindow);
 
-	var _Debug = __webpack_require__(77);
+	var _utilDebug = __webpack_require__(77);
 
-	var _Debug2 = _interopRequireDefault(_Debug);
+	var _utilDebug2 = _interopRequireDefault(_utilDebug);
 
-	var _Timer = __webpack_require__(78);
+	var _utilTimer = __webpack_require__(78);
 
-	var _Timer2 = _interopRequireDefault(_Timer);
+	var _utilTimer2 = _interopRequireDefault(_utilTimer);
 
 	var FoggyWindow = (function () {
 	    function FoggyWindow(query) {
@@ -567,8 +572,8 @@
 
 	        _classCallCheck(this, FoggyWindow);
 
-	        this['debugger'] = new _Debug2['default']();
-	        this.timer = new _Timer2['default'](3000, function () {
+	        this['debugger'] = new _utilDebug2['default']();
+	        this.timer = new _utilTimer2['default'](3000, function () {
 	            _this.fogOver(2000);
 	        });
 
@@ -595,7 +600,6 @@
 	        };
 
 	        this.overlay.canvas.addEventListener('mousedown', function (event) {
-	            //console.log('mousedown')
 	            _this.draw(event);
 	            _this.overlay.canvas.addEventListener('mousemove', moveListener);
 	        });
@@ -605,7 +609,6 @@
 	            _this.overlay.canvas.addEventListener('touchmove', moveListener);
 	        });
 	        this.overlay.canvas.addEventListener('mouseup', function (event) {
-	            //console.log('mouseup')
 	            _this.startedDrawing = false;
 	            event.target.removeEventListener('mousemove', moveListener);
 	        });
@@ -2073,9 +2076,9 @@
 	    value: true
 	});
 
-	var _Debug = __webpack_require__(77);
+	var _utilDebug = __webpack_require__(77);
 
-	var _Debug2 = _interopRequireDefault(_Debug);
+	var _utilDebug2 = _interopRequireDefault(_utilDebug);
 
 	var OverlayWindow = (function () {
 	    function OverlayWindow() {
@@ -2221,7 +2224,7 @@
 	            context.fillStyle = '#ff0022';
 	            context.fillRect(x, y, 3, 3);
 	            context.stroke();
-	            console.log(x, y);
+	            this.log(x, y);
 	        }
 	    }, {
 	        key: 'beginPath',
