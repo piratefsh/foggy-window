@@ -759,7 +759,7 @@
 
 	                // if done, clear overlay and show again
 	                else {
-	                        _this3.overlay.context.clearRect(0, 0, _this3.overlay.canvas.width, _this3.overlay.canvas.height);
+	                        _this3.overlay.clear();
 	                        _this3.overlay.setOpacity(1);
 	                        _this3.overlay.isTransitioning = false;
 	                    }
@@ -2096,9 +2096,9 @@
 	        value: function setSize(width, height) {
 	            this.canvas.width = width;
 	            this.canvas.height = height;
-
-	            //// this.debug()
 	        }
+
+	        // draw new line or continue from previous
 	    }, {
 	        key: 'draw',
 	        value: function draw(newLine, x, y) {
@@ -2107,7 +2107,9 @@
 	            context.lineCap = 'round';
 	            context.lineJoin = 'round';
 	            context.lineWidth = 35;
-	            context.strokeStyle = 'rgba(255,0,0,0.05)';
+	            context.strokeStyle = 'rgba(255,0,0,0.2)';
+	            context.shadowColor = 'rgba(255,0,0,1)';
+	            context.shadowBlur = 1;
 
 	            var currLine = this.lines[this.lines.length - 1];
 
@@ -2142,19 +2144,31 @@
 
 	            return overlayImgData;
 	        }
+
+	        // empty canvas
 	    }, {
-	        key: 'drawClear',
-	        value: function drawClear(unblurredImageData) {
-	            var clearParts = this.makeClear(unblurredImageData);
-	            this.context.drawImage(this.canvas, 0, 0);
+	        key: 'clear',
+	        value: function clear() {
+	            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	        }
+
+	        // set canvas opacity
 	    }, {
 	        key: 'setOpacity',
 	        value: function setOpacity(opacity) {
 	            this.canvas.style.opacity = opacity;
 	        }
 
-	        // generate clear parts given image data of unblurred image
+	        // draw unblurry parts
+	    }, {
+	        key: 'drawClear',
+	        value: function drawClear(unblurredImageData) {
+	            var clearParts = this.makeClear(unblurredImageData);
+	            this.context.putImageData(clearParts, 0, 0);
+	        }
+
+	        // generate clear parts given image data of unblurred image to be drawn
+	        // returns ImageData of clear parts
 	    }, {
 	        key: 'makeClear',
 	        value: function makeClear(unblurredImageData) {
@@ -2162,7 +2176,7 @@
 	            var pixels = new Uint8ClampedArray(data.length);
 
 	            for (var i = 0; i < data.length; i = i + 4) {
-	                if (data[i] != 0) {
+	                if (data[i] != 0 || data[i + 1] != 0 || data[i + 3] != 0) {
 	                    pixels[i] = unblurredImageData.data[i];
 	                    pixels[i + 1] = unblurredImageData.data[i + 1];
 	                    pixels[i + 2] = unblurredImageData.data[i + 2];
@@ -2171,22 +2185,8 @@
 	            }
 
 	            var overlay = new ImageData(pixels, this.canvas.width, this.canvas.height);
-	            this.context.putImageData(overlay, 0, 0);
 
-	            return this.canvas;
-	        }
-	    }, {
-	        key: 'debug',
-	        value: function debug() {
-	            this['debugger'] = new _Debug2['default']();
-	            this['debugger'].beginPath(this.context, 455, 149);
-	            this['debugger'].quadraticCurve(this.context, 455, 149, 455, 147);
-	            this['debugger'].quadraticCurve(this.context, 455, 147, 458, 139);
-	            this['debugger'].quadraticCurve(this.context, 458, 139, 480, 114);
-	            this['debugger'].quadraticCurve(this.context, 480, 114, 501, 103);
-	            this['debugger'].quadraticCurve(this.context, 501, 103, 507, 101);
-	            this['debugger'].quadraticCurve(this.context, 507, 101, 507, 101);
-	            this['debugger'].quadraticCurve(this.context, 507, 101, 514, 100);
+	            return overlay;
 	        }
 	    }]);
 
