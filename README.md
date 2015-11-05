@@ -1,11 +1,22 @@
 # Foggy Window
 
+You know when you're behind a window on a cold day and it fogs up? Yeah, we're replicating that in your browser. So you can have a foggy window in your window.
+
+Works on mobile for touch.   
+
+## Technologies
+
+* ES6 Javascript
+* Webpack
+* Sass
+
 ## Development 
 
 ### Install
 
 ``` 
 npm install
+npm install webpack webpack-dev-server -g
 ```
 
 ### Serve
@@ -23,3 +34,7 @@ To compile for production:
 ```
 webpack --config webpack.config.js
 ```
+
+## Todo
+* Video instead of static image
+* Fog up by parts instead of all
