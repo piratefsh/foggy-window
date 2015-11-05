@@ -773,7 +773,16 @@
 	        value: function savePic(filename) {
 	            var link = document.createElement('a');
 	            link.download = filename;
-	            link.href = this.canvas.toDataURL();
+
+	            // combine window and overlay
+	            var combinedCanvas = document.createElement('canvas');
+	            combinedCanvas.width = this.canvas.width;
+	            combinedCanvas.height = this.canvas.height;
+	            var combinedCanvasContext = combinedCanvas.getContext('2d');
+	            combinedCanvasContext.drawImage(this.canvas, 0, 0);
+	            combinedCanvasContext.drawImage(this.overlay.canvas, 0, 0);
+
+	            link.href = combinedCanvas.toDataURL();
 	            link.click();
 	        }
 	    }]);
