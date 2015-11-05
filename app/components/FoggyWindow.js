@@ -1,5 +1,5 @@
 import StackBlur from 'stackblur-canvas';
-import OverlayWindow from 'OverlayWindow';
+import OverlayWindow from './OverlayWindow';
 import Debug from 'util/Debug';
 import Timer from 'util/Timer';
 

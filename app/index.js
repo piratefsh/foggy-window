@@ -1,7 +1,7 @@
 import 'styles/style.scss';
 import 'font-awesome-webpack';
-import FoggyWindow from 'FoggyWindow';
-import images from 'Images';
+import FoggyWindow from 'components/FoggyWindow';
+import images from 'components/SceneryImages';
 
 const UPLOAD_SERVER_URL = 'http://45.55.61.164:5000/upload/url';
 const foggy = new FoggyWindow('.foggy-window');
