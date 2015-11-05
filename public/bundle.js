@@ -203,7 +203,8 @@
 	        };
 
 	        window.onresize = function () {
-	            return _this.render();
+	            _this.render();
+	            _this.drawClear();
 	        };
 
 	        this.canvas.addEventListener('mousedown', function (event) {
@@ -340,6 +341,7 @@
 	                context.moveTo(x, y);
 	                this.startedDrawing = true;
 	                context.lineTo(x + 1, y + 1);
+	                context.moveTo(x, y);
 	            } else {
 	                var previousPoint = this.points[this.points.length - 1];
 	                var x0 = previousPoint[0]; //x coordinate or previous point in path
@@ -347,16 +349,17 @@
 	                var midpointX = parseInt((x + x0) / 2);
 	                var midpointY = parseInt((y + y0) / 2);
 
-	                context.quadraticCurveTo(midpointX, midpointY, x, y);
-
+	                ////
+	                this['debugger'].quadraticCurve(context, x0, y0, x, y);
 	                //// this.debugger.point(this.overlayContext, midpointX, midpointY);
+	                this['debugger'].log(x0, y0, x, y);
 	            }
 
+	            this.points.push([x, y]);
 	            context.stroke();
 
 	            var overlayImgData = context.getImageData(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
 	            this.drawClear(overlayImgData);
-	            this.points.push([x, y]);
 	        }
 	    }, {
 	        key: 'drawClear',
@@ -1664,9 +1667,15 @@
 
 	var _classCallCheck = __webpack_require__(12)['default'];
 
+	var _interopRequireDefault = __webpack_require__(2)['default'];
+
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
+
+	var _Debug = __webpack_require__(54);
+
+	var _Debug2 = _interopRequireDefault(_Debug);
 
 	var OverlayWindow = (function () {
 	    function OverlayWindow() {
@@ -1676,7 +1685,7 @@
 	        this.context = this.canvas.getContext('2d');
 
 	        //// debug
-	        //document.querySelector('body').appendChild(this.canvas);
+	        document.querySelector('body').appendChild(this.canvas);
 	    }
 
 	    _createClass(OverlayWindow, [{
@@ -1684,6 +1693,7 @@
 	        value: function setSize(width, height) {
 	            this.canvas.width = width;
 	            this.canvas.height = height;
+	            this.debug();
 	        }
 
 	        // generate clear parts given image data of unblurred image
@@ -1706,6 +1716,19 @@
 	            this.context.putImageData(overlay, 0, 0);
 
 	            return this.canvas;
+	        }
+	    }, {
+	        key: 'debug',
+	        value: function debug() {
+	            this['debugger'] = new _Debug2['default']();
+	            this['debugger'].beginPath(this.context, 455, 149);
+	            this['debugger'].quadraticCurve(this.context, 455, 149, 455, 147);
+	            this['debugger'].quadraticCurve(this.context, 455, 147, 458, 139);
+	            this['debugger'].quadraticCurve(this.context, 458, 139, 480, 114);
+	            this['debugger'].quadraticCurve(this.context, 480, 114, 501, 103);
+	            this['debugger'].quadraticCurve(this.context, 501, 103, 507, 101);
+	            this['debugger'].quadraticCurve(this.context, 507, 101, 507, 101);
+	            this['debugger'].quadraticCurve(this.context, 507, 101, 514, 100);
 	        }
 	    }]);
 
@@ -1741,6 +1764,30 @@
 	            context.fillRect(x, y, 3, 3);
 	            context.stroke();
 	            console.log(x, y);
+	        }
+	    }, {
+	        key: 'beginPath',
+	        value: function beginPath(context, x, y) {
+	            var thickness = arguments.length <= 3 || arguments[3] === undefined ? 35 : arguments[3];
+
+	            context.strokeStyle = 'rgba(255, 0, 0, 0.1)';
+	            context.lineWidth = thickness;
+	            context.lineCap = 'round';
+	            context.beginPath();
+	            context.moveTo(x, y);
+	        }
+	    }, {
+	        key: 'quadraticCurve',
+	        value: function quadraticCurve(context, x0, y0, x1, y1) {
+	            var midpointX = parseInt((x1 + x0) / 2);
+	            var midpointY = parseInt((y1 + y0) / 2);
+	            context.quadraticCurveTo(midpointX, midpointY, x1, y1);
+	            context.stroke();
+	        }
+	    }, {
+	        key: 'log',
+	        value: function log() {
+	            console.info.apply(console, arguments);
 	        }
 	    }]);
 
