@@ -596,7 +596,6 @@
 
 	        window.onresize = function () {
 	            _this.render();
-	            _this.drawClear();
 	        };
 
 	        this.overlay.canvas.addEventListener('mousedown', function (event) {
