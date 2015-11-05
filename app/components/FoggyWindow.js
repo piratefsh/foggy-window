@@ -12,8 +12,6 @@ export default class FoggyWindow {
             this.fogOver(2000);
         });
 
-        this.timer.start();
-
         // setup canvas
         this.canvas = document.querySelector(query);
         this.overlay = new OverlayWindow();

@@ -7,7 +7,7 @@ export default class Timer {
     }
 
     start() {
-        this.startTime = new Date()
+        this.startTime = new Date();
         this.timeout = setTimeout(()=> {
             this.startTime = new Date();
             this.callback();
@@ -15,7 +15,10 @@ export default class Timer {
     }
 
     reset() {
-        clearTimeout(this.timeout)
-        this.start()
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+
+        this.start();
     }
 }

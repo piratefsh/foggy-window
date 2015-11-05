@@ -577,8 +577,6 @@
 	            _this.fogOver(2000);
 	        });
 
-	        this.timer.start();
-
 	        // setup canvas
 	        this.canvas = document.querySelector(query);
 	        this.overlay = new _OverlayWindow2['default']();
@@ -2296,7 +2294,10 @@
 	    }, {
 	        key: "reset",
 	        value: function reset() {
-	            clearTimeout(this.timeout);
+	            if (this.timeout) {
+	                clearTimeout(this.timeout);
+	            }
+
 	            this.start();
 	        }
 	    }]);
