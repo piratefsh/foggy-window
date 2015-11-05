@@ -25,7 +25,7 @@ export default class OverlayWindow {
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.lineWidth = 35;
-        context.strokeStyle = 'rgba(255,0,0,0.25)';
+        context.strokeStyle = 'rgba(255,0,0,0.2)';
         context.shadowColor = 'rgba(255,0,0,1)'
         context.shadowBlur = 1
 
