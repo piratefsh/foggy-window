@@ -47,16 +47,14 @@ btnUpload.onclick = (e) => {
                 toggleUploadState(false);
             }
             else{
-                window.alert('Invalid image')
+                window.alert('Invalid image. Please upload image with .jpg, .gif or .png extensions only')
             }
         }
     };
 
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData)
     req.open('POST', UPLOAD_SERVER_URL);
-    // req.setRequestHeader("Content-Type", "multipart/form-data");
     req.send(formData);
 };
 
