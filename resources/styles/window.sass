@@ -32,6 +32,7 @@ body
                     display: block
     .controls
         position: absolute
+        z-index: 9
         font-family: 'Gloria Hallelujah'
         padding: $space
         top: 0px
@@ -44,11 +45,15 @@ body
 
 #canvases 
     position: relative
-    max-height: 100vh
+    height: 100vh
     overflow: hidden
+    canvas
+        position: relative
     canvas + canvas
         position: absolute
         top: 0px
+        left: 0px
+        background-color: transparent
 .btn
     background-color: transparent
     color: white
