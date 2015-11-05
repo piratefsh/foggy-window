@@ -29,7 +29,6 @@ export default class FoggyWindow {
 
         window.onresize = () => {
             this.render();
-            this.drawClear();
         };
 
         this.overlay.canvas.addEventListener('mousedown', (event) => {
