@@ -173,7 +173,7 @@ export default class FoggyWindow {
 
             // if done, clear overlay and show again
             else {
-                this.overlay.context.clearRect(0, 0, this.overlay.canvas.width, this.overlay.canvas.height);
+                this.overlay.clear()
                 this.overlay.setOpacity(1);
                 this.overlay.isTransitioning = false;
             }
