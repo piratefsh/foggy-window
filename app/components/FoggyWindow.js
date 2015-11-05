@@ -25,7 +25,10 @@ export default class FoggyWindow {
         this.lightenColor = 'rgba(255,255,255,0.14)';
         this.unblurredImageData = null;
 
-        let moveListener = (event) => this.draw(event);
+        let moveListener = (event) => {
+            event.preventDefault();
+            this.draw(event);
+        }
 
         window.onresize = () => {
             this.render();

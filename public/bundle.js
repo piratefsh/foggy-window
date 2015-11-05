@@ -591,7 +591,8 @@
 	        this.unblurredImageData = null;
 
 	        var moveListener = function moveListener(event) {
-	            return _this.draw(event);
+	            event.preventDefault();
+	            _this.draw(event);
 	        };
 
 	        window.onresize = function () {
