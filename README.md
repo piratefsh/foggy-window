@@ -2,6 +2,12 @@
 
 You know when you're behind a window on a cold day and it fogs up? Yeah, we're replicating that in your browser. So you can have a foggy window in your window.
 
+# [Try it here](http://piratefsh.github.io/foggy-window/public/)
+
+Link to demo: [here](http://piratefsh.github.io/foggy-window/public/)
+
+![Demo screenshot of foggy window](http://i.imgur.com/6KZyRiI.png)
+
 Works on mobile for touch.   
 
 ## Technologies
