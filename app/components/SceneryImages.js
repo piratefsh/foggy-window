@@ -1,3 +1,5 @@
+// Exports images for sceneries
+
 import image00 from 'images/brooklynbridge.jpg';
 import image01 from 'images/cold-morning.jpg';
 import image02 from 'images/dark-street.jpg';

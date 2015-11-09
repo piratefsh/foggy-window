@@ -1,5 +1,6 @@
 import Debug from 'util/Debug';
 
+// Canvas for the clear parts of the window
 export default class OverlayWindow {
 
     constructor() {
@@ -27,7 +28,7 @@ export default class OverlayWindow {
         context.lineWidth = 35;
         context.strokeStyle = 'rgba(255,0,0,0.2)';
         context.shadowColor = 'rgba(255,0,0,1)'
-        context.shadowBlur = 1
+        context.shadowBlur = 3
 
         let currLine = this.lines[this.lines.length - 1];
 

@@ -1,3 +1,4 @@
+// debug functions for canvas
 
 export default class Debug{
     point(context, x, y) {

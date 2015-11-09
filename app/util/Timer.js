@@ -1,3 +1,5 @@
+// simple timer with callback
+
 export default class Timer {
     constructor(delay, callback) {
         this.delay = delay;

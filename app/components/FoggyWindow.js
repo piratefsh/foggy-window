@@ -3,6 +3,7 @@ import OverlayWindow from './OverlayWindow';
 import Debug from 'util/Debug';
 import Timer from 'util/Timer';
 
+// Foggy window canvas
 export default class FoggyWindow {
 
     constructor(query) {
